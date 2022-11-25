@@ -3,6 +3,7 @@ import { StyleSheet, Text, View,TouchableOpacity} from 'react-native';
 import {MaterialIcons} from "@expo/vector-icons"
 import { useDispatch } from "react-redux"
 import { removeList } from "../redux/actions"
+import LotteView from "lottie-react-native"
 
 
 export default function TodoItem({item}){

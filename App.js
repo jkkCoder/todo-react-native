@@ -7,6 +7,8 @@ import { Provider } from "react-redux"
 import {store} from "./redux/store"
 import { useSelector,useDispatch } from "react-redux"
 import { getList } from "./redux/actions"
+import LotteView from "lottie-react-native"
+
 
 const AppWrapper = () => {
   const todoList = useSelector(state => state.todoList)
@@ -28,12 +30,24 @@ const AppWrapper = () => {
           <View style={styles.content}>
             <AddTodo />
             <View style={styles.list}>
-              <FlatList
-                data={todos}
-                renderItem={({ item }) => (
-                  <TodoItem item={item} />
-                )}
-              />
+              {
+                todos.length === 0 ?
+                <>
+                <LotteView 
+                  source={require("./assets/empty.json")}
+                  autoPlay
+                />
+                </>
+                :
+                <FlatList
+                  data={todos}
+                  renderItem={({ item }) => (
+                    <TodoItem item={item} />
+                  )}
+                />
+
+              }
+              
             </View>
           </View>
         </View>

@@ -39,10 +39,8 @@ export const addList = (text,createdAt) => (dispatch,getState) => {
 
 export const removeList = (key) => (dispatch,getState) => {
     const {todoList:{todos}} = getState()
-    console.log("from remove",todos)
 
     const newTodos = todos.filter(todo => todo.key != key)
-    console.log("new todos from remove is ",newTodos)
 
     dispatch({
         type : REMOVE_TODOLIST,

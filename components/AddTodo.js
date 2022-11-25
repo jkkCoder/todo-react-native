@@ -21,6 +21,7 @@ export default function AddTodo() {
         const createdAt = moment().format("D-MMM-YYYY LT")
         console.log(createdAt)
         dispatch(addList(text,createdAt))
+        setText("")
       }
 
     const changeHandler = (val) =>{
