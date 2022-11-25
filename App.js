@@ -6,7 +6,7 @@ import AddTodo from "./components/AddTodo.js";
 import { Provider } from "react-redux"
 import {store} from "./redux/store"
 import { useSelector,useDispatch } from "react-redux"
-import { getList,addList,removeList } from "./redux/actions"
+import { getList } from "./redux/actions"
 
 const AppWrapper = () => {
   const todoList = useSelector(state => state.todoList)
@@ -17,25 +17,6 @@ const AppWrapper = () => {
     dispatch(getList())
   },[dispatch])
 
-  const pressHandler = (key) => {
-    // setTodos((prevTodos) => {
-    //   return prevTodos.filter(todo => todo.key != key)
-    // })
-    dispatch(removeList(key))
-  }
-
-  const submitHandler = (text) => {
-
-    if (text.length < 3) {
-      Alert.alert("OOPS!", "Todos must be over 3 chars long", [
-        { text: "Understood", onPress: () => console.log("alert closed") }
-      ])
-      return
-    }
-
-    dispatch(addList(text))
-  }
-
   return (
     <Provider store={store}>
       <TouchableWithoutFeedback onPress={() => {
@@ -45,12 +26,12 @@ const AppWrapper = () => {
         <View style={styles.container}>
           <Header />
           <View style={styles.content}>
-            <AddTodo submitHandler={submitHandler} />
+            <AddTodo />
             <View style={styles.list}>
               <FlatList
                 data={todos}
                 renderItem={({ item }) => (
-                  <TodoItem item={item} pressHandler={pressHandler} />
+                  <TodoItem item={item} />
                 )}
               />
             </View>

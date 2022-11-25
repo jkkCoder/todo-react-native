@@ -1,8 +1,16 @@
 import React from "react";
 import { StyleSheet, Text, View,TouchableOpacity} from 'react-native';
 import {MaterialIcons} from "@expo/vector-icons"
+import { useDispatch } from "react-redux"
+import { removeList } from "../redux/actions"
 
-export default function TodoItem({item,pressHandler}){
+
+export default function TodoItem({item}){
+    const dispatch = useDispatch()
+
+    const pressHandler = (key) => {
+        dispatch(removeList(key))
+      }
     return (
         <TouchableOpacity onPress={()=>pressHandler(item.key)}>
             <View style={styles.item}>

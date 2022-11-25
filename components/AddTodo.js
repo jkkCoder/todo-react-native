@@ -1,8 +1,24 @@
 import React,{useState} from "react";
+import {Alert} from "react-native"
 import { StyleSheet, Text, TextInput, View, Button} from 'react-native';
+import { useDispatch } from "react-redux"
+import { addList } from "../redux/actions"
 
-export default function AddTodo({submitHandler}) {
+export default function AddTodo() {
     const [text,setText] = useState("")
+    const dispatch = useDispatch()
+
+    const submitHandler = (text) => {
+
+        if (text.length < 3) {
+          Alert.alert("OOPS!", "Todos must be over 3 chars long", [
+            { text: "Understood", onPress: () => console.log("alert closed") }
+          ])
+          return
+        }
+    
+        dispatch(addList(text))
+      }
 
     const changeHandler = (val) =>{
         setText(val)
