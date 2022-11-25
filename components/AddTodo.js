@@ -1,51 +1,58 @@
-import React,{useState} from "react";
-import {Alert} from "react-native"
-import { StyleSheet, Text, TextInput, View, Button} from 'react-native';
+import React, { useState } from "react";
+import { Alert, Keyboard } from "react-native"
+import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
 import { useDispatch } from "react-redux"
 import { addList } from "../redux/actions"
 import moment from "moment"
+import * as yup from "yup"
 
 export default function AddTodo() {
-    const [text,setText] = useState("")
+    const [text, setText] = useState("")
     const dispatch = useDispatch()
 
+    const todoSchema = yup.object().shape({
+        todo: yup.string().required().min(4)
+    })
+
     const submitHandler = (text) => {
+        todoSchema.validate({
+            todo: text
+        })
+        .then((valid)=>{
+            const createdAt = moment().format("D-MMM-YYYY LT")
+            dispatch(addList(text, createdAt))
+            setText("")
+            Keyboard.dismiss()
+        })
+        .catch((err) => {
+            Alert.alert("OOPS!", "Todos must be over 3 chars long", [
+                { text: "Understood", onPress: () => console.log("alert closed") }
+            ])
+        })
+    }
 
-        if (text.length < 3) {
-          Alert.alert("OOPS!", "Todos must be over 3 chars long", [
-            { text: "Understood", onPress: () => console.log("alert closed") }
-          ])
-          return
-        }
-    
-        const createdAt = moment().format("D-MMM-YYYY LT")
-        console.log(createdAt)
-        dispatch(addList(text,createdAt))
-        setText("")
-      }
-
-    const changeHandler = (val) =>{
+    const changeHandler = (val) => {
         setText(val)
     }
-    return(
+    return (
         <View>
-            <TextInput 
+            <TextInput
                 style={styles.input}
                 placeholder="new todo..."
                 value={text}
-                onChangeText={(val)=>changeHandler(val)}
+                onChangeText={(val) => changeHandler(val)}
             />
-            <Button onPress={()=> submitHandler(text)} title="add todo" color="coral" />
+            <Button onPress={() => submitHandler(text)} title="add todo" color="coral" />
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    input:{
-        marginBottom:10,
-        paddingHorizontal:8,
-        paddingVertical:6,
-        borderBottomWidth:1,
-        borderBottomColor:"#ddd"
+    input: {
+        marginBottom: 10,
+        paddingHorizontal: 8,
+        paddingVertical: 6,
+        borderBottomWidth: 1,
+        borderBottomColor: "#ddd"
     }
 })
