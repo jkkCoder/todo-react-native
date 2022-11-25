@@ -6,7 +6,7 @@ import AddTodo from "./components/AddTodo.js";
 import { Provider } from "react-redux"
 import {store} from "./redux/store"
 import { useSelector,useDispatch } from "react-redux"
-import { getList } from "./redux/actions"
+import { getList,addList,removeList } from "./redux/actions"
 
 const AppWrapper = () => {
   const todoList = useSelector(state => state.todoList)
@@ -15,13 +15,13 @@ const AppWrapper = () => {
 
   useEffect(()=>{
     dispatch(getList())
-    console.log("todos is ",todos)
   },[dispatch])
 
   const pressHandler = (key) => {
     // setTodos((prevTodos) => {
     //   return prevTodos.filter(todo => todo.key != key)
     // })
+    dispatch(removeList(key))
   }
 
   const submitHandler = (text) => {
@@ -33,12 +33,7 @@ const AppWrapper = () => {
       return
     }
 
-    // setTodos((prevTodos) => {
-    //   return [
-    //     { text: text, key: Math.random().toString() },
-    //     ...prevTodos
-    //   ]
-    // })
+    dispatch(addList(text))
   }
 
   return (
