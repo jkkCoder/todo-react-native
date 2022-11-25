@@ -3,6 +3,7 @@ import {Alert} from "react-native"
 import { StyleSheet, Text, TextInput, View, Button} from 'react-native';
 import { useDispatch } from "react-redux"
 import { addList } from "../redux/actions"
+import moment from "moment"
 
 export default function AddTodo() {
     const [text,setText] = useState("")
@@ -17,7 +18,9 @@ export default function AddTodo() {
           return
         }
     
-        dispatch(addList(text))
+        const createdAt = moment().format("D-MMM-YYYY LT")
+        console.log(createdAt)
+        dispatch(addList(text,createdAt))
       }
 
     const changeHandler = (val) =>{

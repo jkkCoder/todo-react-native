@@ -6,9 +6,9 @@ export const getList = () => dispatch => {
 
     //make a fetch request to get todos list
     const todos = [     
-        { text: "buy coffee", key: "1" },
-        { text: "create an app", key: "2" },
-        { text: "play on the swich", key: "3" }
+        { text: "buy coffee", createdAt:"24-Nov-2022 7:25 PM", key: "1" },
+        { text: "create an app", createdAt:"23-Nov-2022 7:25 PM", key: "2" },
+        { text: "turn on the switch", createdAt:"22-Nov-2022 7:25 PM", key: "3" }
     ]
     dispatch({
         type: GET_TODOLIST,
@@ -16,11 +16,12 @@ export const getList = () => dispatch => {
     })
 }
 
-export const addList = (text) => (dispatch,getState) => {
+export const addList = (text,createdAt) => (dispatch,getState) => {
     const {todoList:{todos}} = getState()
 
     const todo = {
         text,
+        createdAt,
         key:Math.random().toString()
     }
 
