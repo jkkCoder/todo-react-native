@@ -7,13 +7,14 @@ import LotteView from "lottie-react-native"
 
 
 export default function TodoItem({item}){
+    console.log(item)
     const dispatch = useDispatch()
 
     const pressHandler = (key) => {
         dispatch(removeList(key))
       }
     return (
-        <TouchableOpacity onPress={()=>pressHandler(item.key)}>
+        <TouchableOpacity onPress={()=>pressHandler(item._id)}>
             <View style={styles.item}>
                 <MaterialIcons name="delete" size={18} color={"#333"}/>
                 <View style={styles.cont}>

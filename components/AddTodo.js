@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux"
 import { addList } from "../redux/actions"
 import moment from "moment"
 import * as yup from "yup"
+import axios from "axios"
 
 export default function AddTodo() {
     const [text, setText] = useState("")
@@ -14,7 +15,7 @@ export default function AddTodo() {
         todo: yup.string().required().min(4)
     })
 
-    const submitHandler = (text) => {
+    const submitHandler = async (text) => {
         todoSchema.validate({
             todo: text
         })
@@ -29,6 +30,26 @@ export default function AddTodo() {
                 { text: "Understood", onPress: () => console.log("alert closed") }
             ])
         })
+
+        // try{
+            
+        //     fetch("https://crushcalc.herokuapp.com/postTodo", {
+        //         method: "POST",
+        //         headers: {
+        //             "Content-Type": "application/json"
+        //         },
+        //         body: JSON.stringify({
+        //             text:"hello world",
+        //             createdAt:"25-Nov-2022 7:45 AM"
+        //         })
+        //     })
+        //         .then(res => res.json())
+        //         .then(data=>{
+        //             console.log("todo data is ",data)
+        //         })
+        // }catch(err){
+        //     console.log(err)
+        // }
     }
 
     const changeHandler = (val) => {
