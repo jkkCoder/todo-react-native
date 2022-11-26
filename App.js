@@ -18,31 +18,6 @@ const AppWrapper = () => {
   const { todos } = todoList
   const dispatch = useDispatch()
 
-
-  // useEffect(() => {
-  //   const fun = async () => {
-  //     let todos
-  //     try {
-  //       const { data } = await axios.get("https://crushcalc.herokuapp.com/getTodo")
-  //       todos = data
-  //     } catch (err) {
-  //       console.log(err)
-
-  //       //hardcoded
-  //       todos = [
-  //         { text: "buy coffee", createdAt: "24-Nov-2022 7:25 PM", _id: "1" },
-  //         { text: "create an app", createdAt: "23-Nov-2022 7:25 PM", _id: "2" },
-  //         { text: "turn on the switch", createdAt: "22-Nov-2022 7:25 PM", _id: "3" }
-  //       ]
-  //     }
-
-  //     dispatch(getList(todos))
-  //   }
-
-  //   fun()
-
-  // }, [dispatch])
-
   const { isLoading, error, data } = useQuery("todoQuery", () => axios("https://crushcalc.herokuapp.com/getTodo"))
   console.log("useQuery called isLoading, ",isLoading)
 

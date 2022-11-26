@@ -14,12 +14,6 @@ export const getList = (todos) => async (dispatch) => {
 
 export const addList = (text, createdAt) => async (dispatch, getState) => {
     const { todoList: { todos } } = getState()
-
-    // const todo = {
-    //     text,
-    //     createdAt,
-    //     key: Math.random().toString()
-    // }
     let todo
     try{
         const resp = await axios.post('https://crushcalc.herokuapp.com/postTodo', {
