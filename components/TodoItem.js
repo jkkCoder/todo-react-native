@@ -7,7 +7,6 @@ import LotteView from "lottie-react-native"
 
 
 export default function TodoItem({item}){
-    console.log(item)
     const dispatch = useDispatch()
 
     const pressHandler = (key) => {

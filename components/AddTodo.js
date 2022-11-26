@@ -30,26 +30,6 @@ export default function AddTodo() {
                 { text: "Understood", onPress: () => console.log("alert closed") }
             ])
         })
-
-        // try{
-            
-        //     fetch("https://crushcalc.herokuapp.com/postTodo", {
-        //         method: "POST",
-        //         headers: {
-        //             "Content-Type": "application/json"
-        //         },
-        //         body: JSON.stringify({
-        //             text:"hello world",
-        //             createdAt:"25-Nov-2022 7:45 AM"
-        //         })
-        //     })
-        //         .then(res => res.json())
-        //         .then(data=>{
-        //             console.log("todo data is ",data)
-        //         })
-        // }catch(err){
-        //     console.log(err)
-        // }
     }
 
     const changeHandler = (val) => {

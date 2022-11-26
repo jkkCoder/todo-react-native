@@ -4,23 +4,7 @@ export const GET_TODOLIST = 'GET_TODOLIST'
 export const ADD_TODOLIST = 'ADD_TODOLIST'
 export const REMOVE_TODOLIST = 'REMOVE_TODOLIST'
 
-export const getList = () => async (dispatch) => {
-
-    //make a fetch request to get todos list
-    let todos
-    try {
-        const { data } = await axios.get("https://crushcalc.herokuapp.com/getTodo")
-        todos = data
-    } catch (err) {
-        console.log(err)
-
-        //hardcoded
-        todos = [
-            { text: "buy coffee", createdAt: "24-Nov-2022 7:25 PM", _id: "1" },
-            { text: "create an app", createdAt: "23-Nov-2022 7:25 PM", _id: "2" },
-            { text: "turn on the switch", createdAt: "22-Nov-2022 7:25 PM", _id: "3" }
-        ]
-    }
+export const getList = (todos) => async (dispatch) => {
 
     dispatch({
         type: GET_TODOLIST,
@@ -43,7 +27,6 @@ export const addList = (text, createdAt) => async (dispatch, getState) => {
             createdAt
         });
         todo = resp.data.todo
-        console.log("from add ",resp.data)
     }catch(err){
         console.log(err)
     }

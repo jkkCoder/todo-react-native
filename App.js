@@ -1,13 +1,16 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Alert, FlatList, Keyboard, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import Header from "./components/Header.js";
 import TodoItem from "./components/TodoItem.js";
 import AddTodo from "./components/AddTodo.js";
 import { Provider } from "react-redux"
-import {store} from "./redux/store"
-import { useSelector,useDispatch } from "react-redux"
+import { store } from "./redux/store"
+import { useSelector, useDispatch } from "react-redux"
 import { getList } from "./redux/actions"
 import LotteView from "lottie-react-native"
+import axios from "axios"
+import { useQuery } from "react-query"
+import { QueryClient, QueryClientProvider } from "react-query"
 
 
 const AppWrapper = () => {
@@ -15,9 +18,39 @@ const AppWrapper = () => {
   const { todos } = todoList
   const dispatch = useDispatch()
 
+
+  // useEffect(() => {
+  //   const fun = async () => {
+  //     let todos
+  //     try {
+  //       const { data } = await axios.get("https://crushcalc.herokuapp.com/getTodo")
+  //       todos = data
+  //     } catch (err) {
+  //       console.log(err)
+
+  //       //hardcoded
+  //       todos = [
+  //         { text: "buy coffee", createdAt: "24-Nov-2022 7:25 PM", _id: "1" },
+  //         { text: "create an app", createdAt: "23-Nov-2022 7:25 PM", _id: "2" },
+  //         { text: "turn on the switch", createdAt: "22-Nov-2022 7:25 PM", _id: "3" }
+  //       ]
+  //     }
+
+  //     dispatch(getList(todos))
+  //   }
+
+  //   fun()
+
+  // }, [dispatch])
+
+  const { isLoading, error, data } = useQuery("todoQuery", () => axios("https://crushcalc.herokuapp.com/getTodo"))
+  console.log("useQuery called isLoading, ",isLoading)
+
   useEffect(()=>{
-    dispatch(getList())
-  },[dispatch])
+    if(!isLoading){
+      dispatch(getList(data.data))
+    }
+  },[isLoading,data])
 
   return (
     <Provider store={store}>
@@ -31,37 +64,46 @@ const AppWrapper = () => {
             <AddTodo />
             <View style={styles.list}>
               {
-                todos.length === 0 ?
-                <>
-                <LotteView 
-                  source={require("./assets/empty.json")}
-                  autoPlay
-                />
-                </>
-                :
-                <FlatList
-                  data={todos}
-                  renderItem={({ item }) => (
-                    <TodoItem item={item} />
-                  )}
-                />
+                isLoading ? <LotteView source={require("./assets/loading.json")} autoPlay />
+                  :
+                 todos.length === 0 ?
+                    <>
+                      <LotteView
+                        source={require("./assets/empty.json")}
+                        autoPlay
+                      />
+                    </>
+                    :
+                    <FlatList
+                      data={todos}
+                      renderItem={({ item }) => (
+                        <TodoItem item={item} />
+                      )}
+                    />
 
               }
-              
+
             </View>
           </View>
         </View>
       </TouchableWithoutFeedback>
     </Provider>
+
   );
 }
 
 
 export default function App() {
+
+  const queryClient = new QueryClient()
+
   return (
-    <Provider store={store}>
-      <AppWrapper />
-    </Provider>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <AppWrapper />
+      </Provider>
+    </QueryClientProvider>
+
   )
 }
 
