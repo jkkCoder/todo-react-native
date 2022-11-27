@@ -11,21 +11,60 @@ import LotteView from "lottie-react-native"
 import axios from "axios"
 import { useQuery } from "react-query"
 import { QueryClient, QueryClientProvider } from "react-query"
+import 'react-native-reanimated'
+import { MotiView } from 'moti'
+
+export const Loader = ({ size }) => (
+  <MotiView
+    from={{
+      width: size,
+      height: size,
+      borderRadius: size / 2,
+      borderWidth: 0,
+      shadowOpacity: 0.5
+    }}
+    animate={{
+      width: size + 20,
+      height: size + 20,
+      borderRadius: (size + 20) / 2,
+      borderWidth: 5,
+      shadowOpacity: 1
+    }}
+    transition={{
+      type: "timing",
+      duration: 1000,
+      loop: true,
+    }}
+    style={{
+      width: 50,
+      height: 50,
+      borderRadius: 25,
+      borderWidth: 5,
+      borderColor: "black",
+      shadowColor: "black",
+      shadowOffset: { width: 0, height: 0 },
+      shadowRadius: 10,
+      marginLeft: "auto",
+      marginRight: "auto",
+      marginTop: 50
+    }}
+  />
+)
 
 
 const AppWrapper = () => {
   const todoList = useSelector(state => state.todoList)
   const { todos } = todoList
+  const { loading } = todoList
   const dispatch = useDispatch()
 
   const { isLoading, error, data } = useQuery("todoQuery", () => axios("https://crushcalc.herokuapp.com/getTodo"))
-  console.log("useQuery called isLoading, ",isLoading)
 
-  useEffect(()=>{
-    if(!isLoading){
+  useEffect(() => {
+    if (!isLoading) {
       dispatch(getList(data.data))
     }
-  },[isLoading,data])
+  }, [isLoading, data])
 
   return (
     <Provider store={store}>
@@ -37,28 +76,34 @@ const AppWrapper = () => {
           <Header />
           <View style={styles.content}>
             <AddTodo />
-            <View style={styles.list}>
-              {
-                isLoading ? <LotteView source={require("./assets/loading.json")} autoPlay />
-                  :
-                 todos.length === 0 ?
-                    <>
-                      <LotteView
-                        source={require("./assets/empty.json")}
-                        autoPlay
-                      />
-                    </>
-                    :
-                    <FlatList
-                      data={todos}
-                      renderItem={({ item }) => (
-                        <TodoItem item={item} />
-                      )}
-                    />
+            {
+              loading ? <Loader size={50} />
+                :
+                <>
+                  <View style={styles.list}>
+                    {
+                      isLoading ? <LotteView source={require("./assets/loading.json")} autoPlay />
+                        :
+                        todos.length === 0 ?
+                          <>
+                            <LotteView
+                              source={require("./assets/empty.json")}
+                              autoPlay
+                            />
+                          </>
+                          :
+                          <FlatList
+                            data={todos}
+                            renderItem={({ item }) => (
+                              <TodoItem item={item} />
+                            )}
+                          />
 
-              }
+                    }
 
-            </View>
+                  </View>
+                </>
+            }
           </View>
         </View>
       </TouchableWithoutFeedback>

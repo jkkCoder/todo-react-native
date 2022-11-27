@@ -3,6 +3,7 @@ import axios from "axios";
 export const GET_TODOLIST = 'GET_TODOLIST'
 export const ADD_TODOLIST = 'ADD_TODOLIST'
 export const REMOVE_TODOLIST = 'REMOVE_TODOLIST'
+export const ADD_TODOLIST_REQUEST = 'ADD_TODOLIST_REQUEST'
 
 export const getList = (todos) => async (dispatch) => {
 
@@ -15,6 +16,12 @@ export const getList = (todos) => async (dispatch) => {
 export const addList = (text, createdAt) => async (dispatch, getState) => {
     const { todoList: { todos } } = getState()
     let todo
+
+    dispatch({
+        type:ADD_TODOLIST_REQUEST,
+        payload:todos
+    })
+
     try{
         const resp = await axios.post('https://crushcalc.herokuapp.com/postTodo', {
             text,

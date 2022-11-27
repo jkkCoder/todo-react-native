@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux"
 import { addList } from "../redux/actions"
 import moment from "moment"
 import * as yup from "yup"
-import axios from "axios"
 
 export default function AddTodo() {
     const [text, setText] = useState("")
@@ -19,17 +18,17 @@ export default function AddTodo() {
         todoSchema.validate({
             todo: text
         })
-        .then((valid)=>{
-            const createdAt = moment().format("D-MMM-YYYY LT")
-            dispatch(addList(text, createdAt))
-            setText("")
-            Keyboard.dismiss()
-        })
-        .catch((err) => {
-            Alert.alert("OOPS!", "Todos must be over 3 chars long", [
-                { text: "Understood", onPress: () => console.log("alert closed") }
-            ])
-        })
+            .then((valid) => {
+                const createdAt = moment().format("D-MMM-YYYY LT")
+                dispatch(addList(text, createdAt))
+                setText("")
+                Keyboard.dismiss()
+            })
+            .catch((err) => {
+                Alert.alert("OOPS!", "Todos must be over 3 chars long", [
+                    { text: "Understood", onPress: () => console.log("alert closed") }
+                ])
+            })
     }
 
     const changeHandler = (val) => {
